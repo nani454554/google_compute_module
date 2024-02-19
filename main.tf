@@ -1,32 +1,30 @@
-variable project_id {
-  type        = string
-  default     = "nani-university"
-  description = "project_id"
+terraform {
+  required_version = ">= 0.12"
+ required_providers {
+     google ={
+        source = "hashicorp/google"
+     }
+ }
+}
+
+provider "google" {
+    project = var.project_id
+    region = "us-west1"
 }
 
 
-variable vm_name {
-  type        = string
-  default     = "uatserver"
-  description = "machine_name"
+resource "google_compute_instance" "default" {
+    name = var.vm_name
+    machine_type = var.machine_type
+    zone = var.zone
+
+ boot_disk {
+    initialize_params {
+        image = var.image
+    }
+ }
+
+ network_interface {
+    network = "default"
+  }
 }
-
-variable machine_type {
-  type        = string
-  default     = "n2-standard-2"
-  description = "type_of_cpu"
-}
-
-variable zone {
-  type        = string
-  default     = "us-central1-a"
-  description = "zone"
-}
-
-variable image {
-  type        = string
-  default     = "debian-cloud/debian-11"
-  description = "os"
-}
-
-
